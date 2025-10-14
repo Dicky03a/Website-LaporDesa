@@ -80,6 +80,16 @@
                                           placeholder="Tuliskan deskripsi laporan Anda di sini...">{{ old('deskripsi') }}</textarea>
                                     @error('deskripsi') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
                               </div>
+                              <!-- Lokasi -->
+                              <div>
+                                    <label class="block font-medium text-gray-700 mb-2">Lokasi Kejadian</label>
+                                    <input type="text" name="lokasi" value="{{ old('lokasi') }}" placeholder="Contoh: Dusun Soko RT 02 RW 01"
+                                          class="text-black w-full border border-gray-300 rounded-full px-6 py-3 placeholder-gray-400 focus:ring-2 focus:ring-green-400 focus:outline-none">
+                                    @error('lokasi')
+                                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                                    @enderror
+                              </div>
+
                         </div>
 
                         <!-- Tombol -->

@@ -7,13 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class laporan extends Model
 {
     protected $fillable = [
+        'kode_laporan',
         'judul',
         'kategori_id',
         'nomor_wa',
         'deskripsi',
         'lokasi',
         'foto',
+        'status',
     ];
+
 
     public function kategori()
     {

@@ -7,6 +7,7 @@ use App\Models\laporan;
 use App\Models\kategoriLaporan;
 use App\Models\notifikasi;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class LaporanController extends Controller
 {
@@ -33,26 +34,30 @@ class LaporanController extends Controller
             $validated['foto'] = $request->file('foto')->store('laporan', 'public');
         }
 
-        // 3️⃣ Simpan laporan
+        // 3️⃣ Buat kode laporan unik
+        $validated['kode_laporan'] = 'LPR-' . strtoupper(Str::random(6));
+
+        // 4️⃣ Simpan laporan
         $laporan = laporan::create($validated);
 
-        // 4️⃣ Ambil kategori untuk dapatkan nomor petugas dan kades
+        // 5️⃣ Ambil kategori untuk dapatkan nomor petugas & kades
         $kategori = kategoriLaporan::find($validated['kategori_id']);
 
-        // 5️⃣ Buat pesan teks
-        $pesan = "*Laporan Baru Masuk*\n\n" .
+        // 6️⃣ Buat pesan utama
+        $pesanUtama = "*Laporan Baru Masuk*\n\n" .
+            "🆔 Kode Laporan: {$laporan->kode_laporan}\n" .
             "📝 Judul: {$laporan->judul}\n" .
             "📂 Kategori: {$kategori->nama_kategori}\n" .
             "📍 Lokasi: {$laporan->lokasi}\n" .
             "📋 Deskripsi:\n{$laporan->deskripsi}\n\n" .
-            "📞 Nomor Pelapor: {$laporan->nomor_wa}";
+            "📞 Nomor Pelapor: {$laporan->nomor_wa}\n\n" .
+            "📸 Foto terlampir.";
 
-        // 6️⃣ Buat URL gambar (public)
         $fotoUrl = asset('storage/' . $laporan->foto);
 
-        // 7️⃣ Kirim pesan ke petugas
+        // 7️⃣ Kirim pesan ke Petugas (khusus kategori)
         if ($kategori->nomor_petugas) {
-            $this->kirimFonnte($kategori->nomor_petugas, $pesan, $fotoUrl);
+            $this->kirimFonnte($kategori->nomor_petugas, $pesanUtama, $fotoUrl);
             notifikasi::create([
                 'laporan_id' => $laporan->id,
                 'pesan' => "Pesan & foto dikirim ke petugas: {$kategori->nomor_petugas}",
@@ -60,21 +65,40 @@ class LaporanController extends Controller
             ]);
         }
 
-        // 8️⃣ Kirim pesan ke kades
-        if ($kategori->nomor_kades) {
-            $this->kirimFonnte($kategori->nomor_kades, $pesan, $fotoUrl);
+        // 8️⃣ Kirim pesan ke Kepala Desa (SEMUA laporan)
+        $nomorKades = $kategori->nomor_kades ?? env('NOMOR_KADES_UTAMA'); // Bisa pakai default dari .env
+        if ($nomorKades) {
+            $this->kirimFonnte($nomorKades, $pesanUtama, $fotoUrl);
             notifikasi::create([
                 'laporan_id' => $laporan->id,
-                'pesan' => "Pesan & foto dikirim ke kades: {$kategori->nomor_kades}",
+                'pesan' => "Pesan & foto dikirim ke kepala desa: {$nomorKades}",
                 'waktu_kirim' => now(),
             ]);
         }
+
+        // 9️⃣ Kirim pesan konfirmasi ke Pelapor
+        $pesanUser = "*Terima kasih telah melapor!*\n\n" .
+            "Laporan Anda telah kami terima dengan rincian:\n" .
+            "🆔 Kode Laporan: {$laporan->kode_laporan}\n" .
+            "📝 Judul: {$laporan->judul}\n" .
+            "📂 Kategori: {$kategori->nama_kategori}\n\n" .
+            "Anda dapat memantau status laporan melalui link berikut:\n" .
+            url('/laporan/status/' . $laporan->kode_laporan) . "\n\n" .
+            "🙏 Mohon ditunggu, petugas akan segera menindaklanjuti laporan Anda.";
+
+        $this->kirimFonnte($laporan->nomor_wa, $pesanUser);
+
+        notifikasi::create([
+            'laporan_id' => $laporan->id,
+            'pesan' => "Pesan konfirmasi dikirim ke pelapor: {$laporan->nomor_wa}",
+            'waktu_kirim' => now(),
+        ]);
 
         return redirect()->back()->with('success', 'Laporan berhasil dikirim dan notifikasi sudah dikirim ke WhatsApp!');
     }
 
     /**
-     * Fungsi kirim pesan WhatsApp via Fonnte
+     * Kirim pesan WhatsApp via Fonnte API
      */
     private function kirimFonnte($nomorTujuan, $pesan, $fotoUrl = null)
     {
@@ -91,9 +115,15 @@ class LaporanController extends Controller
             'Authorization' => env('FONNTE_TOKEN'),
         ])->post('https://api.fonnte.com/send', $data);
 
-        // Log respons jika perlu untuk debugging
+        // Jika gagal, bisa dilog untuk debugging
         // \Log::info('Fonnte Response:', $response->json());
 
         return $response->successful();
+    }
+
+    public function status($kode)
+    {
+        $laporan = laporan::where('kode_laporan', $kode)->firstOrFail();
+        return view('laporan.status', compact('laporan'));
     }
 }

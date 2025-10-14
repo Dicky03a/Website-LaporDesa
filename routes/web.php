@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
 use App\Http\Controllers\LaporanController;
+use App\Models\laporan;
 
 Route::get('/', function () {
     return view('welcome');
@@ -11,6 +12,10 @@ Route::get('/', function () {
 
 Route::get('/lapor', [LaporanController::class, 'create'])->name('lapor.create');
 Route::post('/lapor', [LaporanController::class, 'store'])->name('lapor.store');
+
+Route::get('/laporan/status/{kode}', [LaporanController::class, 'status'])->name('laporan.status');
+
+
 
 
 

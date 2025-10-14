@@ -16,29 +16,52 @@ class LaporanForm
     {
         return $schema
             ->components([
+                TextInput::make('kode_laporan')
+                    ->label('Kode Laporan')
+                    ->disabled()
+                    ->dehydrated(false)
+                    ->columnSpanFull(),
+
                 TextInput::make('judul')
-                    ->label('Judul Laporan')
-                    ->required()
-                    ->maxLength(255),
-                Select::make('kategori_id')
-                    ->options(kategoriLaporan::pluck('nama_kategori', 'id')->toArray())
+                    ->label('Judul')
                     ->required(),
+
+                Select::make('kategori_id')
+                    ->label('Kategori')
+                    ->options(KategoriLaporan::pluck('nama_kategori', 'id'))
+                    ->required(),
+
                 TextInput::make('nomor_wa')
-                    ->label('Nomor WhatsApp')
-                    ->required()
-                    ->maxLength(255),
+                    ->label('Nomor Pelapor')
+                    ->disabled(),
+
                 Textarea::make('deskripsi')
-                    ->label('Deskripsi Laporan')
-                    ->required()
-                    ->maxLength(255),
+                    ->label('Deskripsi')
+                    ->rows(4)
+                    ->disabled(),
+
                 TextInput::make('lokasi')
                     ->label('Lokasi')
-                    ->maxLength(255),
+                    ->disabled(),
+
                 FileUpload::make('foto')
                     ->label('Foto')
+                    ->image()
+                    ->directory('laporan')
+                    ->disk('public')
+                    ->visibility('public')
+                    ->disabled(),
+
+                Select::make('status')
+                    ->label('Status Laporan')
+                    ->options([
+                        'pending' => 'Pending',
+                        'proses' => 'Proses',
+                        'selesai' => 'Selesai',
+                    ])
+                    ->default('pending')
                     ->required()
-                    ->maxSize(1024)
-                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg']),
+                    ->helperText('Ubah status laporan untuk menandai progres.'),
             ]);
     }
 }
