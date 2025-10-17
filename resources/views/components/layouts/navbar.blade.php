@@ -1,10 +1,9 @@
 <!-- Bottom / Top Navigation -->
-<nav id="Bottom-Nav"
-      class="fixed bottom-0 lg:top-0 lg:bottom-auto lg:relative w-full max-w-[640px] lg:max-w-full bg-white px-4 py-5 lg:py-4 z-30 border-t lg:border-b border-gray-200 shadow-sm lg:shadow-md transition-all duration-300 flex justify-center">
+<nav class="fixed bottom-0 lg:top-0 lg:bottom-auto lg:relative w-full max-w-[640px] lg:max-w-full bg-white px-4 py-5 lg:py-4 z-30 border-t lg:border-b border-gray-200 shadow-sm lg:shadow-md transition-all duration-300 flex justify-center">
 
       <ul class="flex justify-center items-center gap-10 sm:gap-12 lg:gap-16">
             <!-- Laporan (Halaman Utama) -->
-            <li class="text-[#F97316] lg:text-gray-700 hover:text-[#F97316] transition-colors duration-300">
+            <li class="text-[#13181D] hover:text-[#F97316] transition-colors duration-300">
                   <a href="{{ url('/') }}" class="menu">
                         <div class="group flex flex-col lg:flex-row items-center text-center gap-[10px] lg:gap-2">
                               <div class="w-6 h-6 flex shrink-0">
