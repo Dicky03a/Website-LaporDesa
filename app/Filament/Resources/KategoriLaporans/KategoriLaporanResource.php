@@ -22,7 +22,9 @@ class KategoriLaporanResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $recordTitleAttribute = 'kategorilaporan';
+    protected static ?string $recordTitleAttribute = 'Kategori Laporan';
+
+    protected static ?string $navigationLabel = 'Kategori Laporan';
 
     public static function form(Schema $schema): Schema
     {

@@ -11,6 +11,13 @@ use Illuminate\Support\Str;
 
 class LaporanController extends Controller
 {
+
+    public function index()
+    {
+        $kategori = kategoriLaporan::pluck('nama_kategori', 'id');
+        return view('front.index', compact('kategori'));
+    }
+
     public function create()
     {
         $kategori = kategoriLaporan::pluck('nama_kategori', 'id');
@@ -83,7 +90,7 @@ class LaporanController extends Controller
             "📝 Judul: {$laporan->judul}\n" .
             "📂 Kategori: {$kategori->nama_kategori}\n\n" .
             "Anda dapat memantau status laporan melalui link berikut:\n" .
-            url('/laporan/status/' . $laporan->kode_laporan) . "\n\n" .
+            route('laporan.status', ['kode' => $laporan->kode_laporan]) . "\n\n" .
             "🙏 Mohon ditunggu, petugas akan segera menindaklanjuti laporan Anda.";
 
         $this->kirimFonnte($laporan->nomor_wa, $pesanUser);
@@ -124,6 +131,22 @@ class LaporanController extends Controller
     public function status($kode)
     {
         $laporan = laporan::where('kode_laporan', $kode)->firstOrFail();
+        return view('laporan.status', compact('laporan'));
+    }
+
+    public function cari()
+    {
+        return view('laporan.cari');
+    }
+
+    public function statusByKode(Request $request)
+    {
+        $laporan = laporan::where('kode_laporan', $request->kode)->first();
+
+        if (!$laporan) {
+            return redirect()->back()->with('error', 'Kode laporan tidak ditemukan. Pastikan Anda memasukkan kode dengan benar.');
+        }
+
         return view('laporan.status', compact('laporan'));
     }
 }

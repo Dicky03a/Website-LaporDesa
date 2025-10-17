@@ -3,9 +3,9 @@
 
 @section('main')
 
-<div class="bg-gray-100 font-sans antialiased mb-8">
-
-      <div class="relative flex flex-col w-full min-h-screen max-w-[640px] lg:max-w-full mx-auto bg-[#F8F8F9]">
+<div class="font-[Poppins] bg-[#F8F8F9] text-gray-800">
+      <div
+            class="relative flex flex-col w-full min-h-screen max-w-[640px] lg:max-w-full mx-auto bg-[#F8F8F9]">
 
             <!-- MAIN CONTENT -->
             <main class="flex-1 overflow-y-auto pb-24">
@@ -25,7 +25,6 @@
                               <input type="text" name="kode"
                                     value="{{ request('kode') }}"
                                     placeholder="Isi Kode Laporan Anda"
-                                    disabled
                                     class="mx-auto block text-center w-full sm:w-[80%] md:w-[60%] lg:w-[40%] border-2 border-white rounded-full px-6 py-3 focus:ring-2 focus:ring-green-400 focus:outline-none">
                         </form>
                   </div>
@@ -105,8 +104,21 @@
                         </div>
                   </div>
                   @endisset
+
+                  <!-- SUBMIT BUTTON -->
+                  <div class="flex justify-center px-5 mt-6">
+                        <form action="{{ route('laporan.status') }}" method="GET"
+                              class="w-full sm:w-[80%] md:w-[60%] lg:w-[40%]">
+                              <input type="hidden" name="kode" value="{{ request('kode') }}">
+                              <button type="submit"
+                                    class="w-full rounded-full p-[14px_20px] text-white text-center bg-[#F97316] font-bold">
+                                    Find Now
+                              </button>
+                        </form>
+                  </div>
             </main>
       </div>
+
 </div>
 
 @endsection

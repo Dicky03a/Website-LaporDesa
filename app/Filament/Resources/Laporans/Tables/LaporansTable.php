@@ -18,6 +18,7 @@ class LaporansTable
     {
         return $table
             ->columns([
+                TextColumn::make('id')->label('ID')->sortable(),
                 TextColumn::make('kode_laporan')->label('Kode')->searchable(),
                 TextColumn::make('judul')->label('Judul')->limit(30)->searchable(),
                 TextColumn::make('kategori.nama_kategori')->label('Kategori'),

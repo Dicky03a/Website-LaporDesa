@@ -6,14 +6,16 @@ use Livewire\Volt\Volt;
 use App\Http\Controllers\LaporanController;
 use App\Models\laporan;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
 
-Route::get('/lapor', [LaporanController::class, 'create'])->name('lapor.create');
+Route::get('/', [LaporanController::class, 'index']);
+
+Route::get('/create', [LaporanController::class, 'create'])->name('lapor.create');
 Route::post('/lapor', [LaporanController::class, 'store'])->name('lapor.store');
 
-Route::get('/laporan/status/{kode}', [LaporanController::class, 'status'])->name('laporan.status');
+
+
+Route::get('/laporan/cari', [LaporanController::class, 'cari'])->name('laporan.cari');
+Route::get('/laporan/status', [LaporanController::class, 'statusByKode'])->name('laporan.status');
 
 
 

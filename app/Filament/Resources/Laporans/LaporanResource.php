@@ -22,7 +22,9 @@ class LaporanResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $recordTitleAttribute = 'laporan';
+    protected static ?string $recordTitleAttribute = 'Laporan';
+
+    protected static ?string $navigationLabel = 'Laporan';
 
     public static function form(Schema $schema): Schema
     {
