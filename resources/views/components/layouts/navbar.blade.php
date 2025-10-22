@@ -1,5 +1,5 @@
 <!-- Bottom / Top Navigation -->
-<nav class="fixed bottom-0 lg:top-0 lg:bottom-auto lg:relative w-full max-w-[640px] lg:max-w-full bg-white px-4 py-5 lg:py-4 z-30 border-t lg:border-b border-gray-200 shadow-sm lg:shadow-md transition-all duration-300 flex justify-center">
+<nav class="fixed bottom-0 lg:top-0 lg:bottom-auto lg:relative w-full max-w-full lg:max-w-full bg-white px-4 py-5 lg:py-4 z-30 border-t lg:border-b border-gray-200 shadow-sm lg:shadow-md transition-all duration-300 flex justify-center">
 
       <ul class="flex justify-center items-center gap-10 sm:gap-12 lg:gap-16">
             <!-- Laporan (Halaman Utama) -->
@@ -47,7 +47,7 @@
                                     </svg>
                               </div>
                               <p class="font-semibold text-sm lg:text-base leading-[21px] transition-all duration-300 group-hover:text-[#F97316]">
-                                    Q&Q
+                                    FAQ
                               </p>
                         </div>
                   </a>

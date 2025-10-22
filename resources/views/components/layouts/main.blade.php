@@ -6,7 +6,7 @@
       <title>Main Layout</title>
 </head>
 
-<body>
+<body class="bg-gray-100 font-sans antialiased">
 
       @yield('main')
 

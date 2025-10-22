@@ -2,7 +2,7 @@
 
 
 @section('main')
-<div class="relative flex flex-col w-full min-h-screen max-w-6xl mx-auto mb-8 bg-white shadow-lg overflow-hidden">
+<div class="relative flex flex-col w-full min-h-screen max-w-full mx-auto pb-8 bg-white shadow-lg overflow-hidden">
 
       <main class="flex-1 overflow-y-auto pb-24">
             <!-- Header -->

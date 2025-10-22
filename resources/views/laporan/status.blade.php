@@ -5,7 +5,7 @@
 
 <div class="bg-gray-100 font-sans antialiased mb-8">
 
-      <div class="relative flex flex-col w-full min-h-screen max-w-[640px] lg:max-w-full mx-auto bg-[#F8F8F9]">
+      <div class="relative flex flex-col w-full min-h-screen max-w-full lg:max-w-full mx-auto bg-[#F8F8F9]">
 
             <!-- MAIN CONTENT -->
             <main class="flex-1 overflow-y-auto pb-24">
