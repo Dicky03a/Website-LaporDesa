@@ -18,6 +18,7 @@ Route::get('/laporan/cari', [LaporanController::class, 'cari'])->name('laporan.c
 Route::get('/laporan/status', [LaporanController::class, 'statusByKode'])->name('laporan.status');
 
 
+Route::view('/faq', 'front.faq')->name('faq');
 
 
 

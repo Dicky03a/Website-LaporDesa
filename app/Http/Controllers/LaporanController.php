@@ -33,36 +33,43 @@ class LaporanController extends Controller
             'nomor_wa' => 'required|string|max:20',
             'deskripsi' => 'required|string|max:500',
             'lokasi' => 'nullable|string|max:255',
-            'foto' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        // 2️⃣ Simpan foto laporan ke storage
+        // 2️⃣ Simpan foto laporan ke storage (jika ada)
         if ($request->hasFile('foto')) {
             $validated['foto'] = $request->file('foto')->store('laporan', 'public');
+        } else {
+            $validated['foto'] = null;
         }
 
         // 3️⃣ Buat kode laporan unik
         $validated['kode_laporan'] = 'LPR-' . strtoupper(Str::random(6));
 
-        // 4️⃣ Simpan laporan
+        // 4️⃣ Simpan laporan ke database
         $laporan = laporan::create($validated);
 
-        // 5️⃣ Ambil kategori untuk dapatkan nomor petugas & kades
+        // 5️⃣ Ambil kategori untuk nomor petugas & kades
         $kategori = kategoriLaporan::find($validated['kategori_id']);
 
-        // 6️⃣ Buat pesan utama
+        // 6️⃣ Buat pesan utama laporan
         $pesanUtama = "*Laporan Baru Masuk*\n\n" .
             "🆔 Kode Laporan: {$laporan->kode_laporan}\n" .
             "📝 Judul: {$laporan->judul}\n" .
             "📂 Kategori: {$kategori->nama_kategori}\n" .
             "📍 Lokasi: {$laporan->lokasi}\n" .
             "📋 Deskripsi:\n{$laporan->deskripsi}\n\n" .
-            "📞 Nomor Pelapor: {$laporan->nomor_wa}\n\n" .
-            "📸 Foto terlampir.";
+            "📞 Nomor Pelapor: {$laporan->nomor_wa}";
 
-        $fotoUrl = asset('storage/' . $laporan->foto);
+        // Tambahkan keterangan jika ada foto
+        if ($laporan->foto) {
+            $pesanUtama .= "\n\n📸 Foto terlampir.";
+        }
 
-        // 7️⃣ Kirim pesan ke Petugas (khusus kategori)
+        // 7️⃣ Siapkan URL foto jika ada
+        $fotoUrl = $laporan->foto ? asset('storage/' . $laporan->foto) : null;
+
+        // 8️⃣ Kirim pesan ke Petugas (khusus kategori)
         if ($kategori->nomor_petugas) {
             $this->kirimFonnte($kategori->nomor_petugas, $pesanUtama, $fotoUrl);
             notifikasi::create([
@@ -72,8 +79,8 @@ class LaporanController extends Controller
             ]);
         }
 
-        // 8️⃣ Kirim pesan ke Kepala Desa (SEMUA laporan)
-        $nomorKades = $kategori->nomor_kades ?? env('NOMOR_KADES_UTAMA'); // Bisa pakai default dari .env
+        // 9️⃣ Kirim pesan ke Kepala Desa (SEMUA laporan)
+        $nomorKades = $kategori->nomor_kades ?? env('NOMOR_KADES_UTAMA');
         if ($nomorKades) {
             $this->kirimFonnte($nomorKades, $pesanUtama, $fotoUrl);
             notifikasi::create([
@@ -83,7 +90,7 @@ class LaporanController extends Controller
             ]);
         }
 
-        // 9️⃣ Kirim pesan konfirmasi ke Pelapor
+        // 🔟 Kirim pesan konfirmasi ke Pelapor
         $pesanUser = "*Terima kasih telah melapor!*\n\n" .
             "Laporan Anda telah kami terima dengan rincian:\n" .
             "🆔 Kode Laporan: {$laporan->kode_laporan}\n" .
@@ -101,8 +108,10 @@ class LaporanController extends Controller
             'waktu_kirim' => now(),
         ]);
 
+        // 🔁 Kembalikan ke halaman form dengan pesan sukses
         return redirect()->back()->with('success', 'Laporan berhasil dikirim dan notifikasi sudah dikirim ke WhatsApp!');
     }
+
 
     /**
      * Kirim pesan WhatsApp via Fonnte API

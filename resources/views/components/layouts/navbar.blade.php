@@ -38,7 +38,7 @@
 
             <!-- Q&Q -->
             <li class="text-[#13181D] hover:text-[#F97316] transition-colors duration-300">
-                  <a href="#" class="menu cursor-not-allowed opacity-70">
+                  <a href="{{ route('faq') }}" class="menu cursor-not-allowed opacity-70">
                         <div class="group flex flex-col lg:flex-row items-center text-center gap-[10px] lg:gap-2">
                               <div class="w-6 h-6 flex shrink-0">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">

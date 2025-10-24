@@ -20,11 +20,14 @@ class KategoriLaporanResource extends Resource
 {
     protected static ?string $model = kategoriLaporan::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTag;
+
 
     protected static ?string $recordTitleAttribute = 'Kategori Laporan';
 
     protected static ?string $navigationLabel = 'Kategori Laporan';
+    protected static ?string $pluralModelLabel = 'Kategori Laporan';
+    protected static ?string $modelLabel = 'Kategori Laporan';
 
     public static function form(Schema $schema): Schema
     {

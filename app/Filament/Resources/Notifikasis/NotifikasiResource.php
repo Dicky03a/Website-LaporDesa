@@ -20,9 +20,14 @@ class NotifikasiResource extends Resource
 {
     protected static ?string $model = notifikasi::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBell;
+
 
     protected static ?string $recordTitleAttribute = 'notifikasi';
+
+    protected static ?string $navigationLabel = 'Notifikasi';
+    protected static ?string $pluralModelLabel = 'Notifikasi';
+    protected static ?string $modelLabel = 'Notifikasi';
 
     public static function form(Schema $schema): Schema
     {

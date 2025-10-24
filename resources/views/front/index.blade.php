@@ -72,15 +72,28 @@
                               <!-- Kolom Kanan -->
                               <div>
                                     <div>
-                                          <label class="block font-medium text-gray-700 mb-2">Bukti / Foto</label>
+                                          <label class="block font-medium text-gray-700 mb-2">Bukti / Foto (Opsional)</label>
                                           <input type="file" name="foto" accept="image/*"
                                                 class="text-black w-full border border-gray-300 rounded-full px-6 py-3 file:mr-3 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-green-100 file:text-green-700 hover:file:bg-green-200 focus:ring-2 focus:ring-green-400 focus:outline-none">
                                     </div>
 
-                                    <div class="mt-5">
-                                          <label class="block font-medium text-gray-700 mb-2">Lokasi</label>
-                                          <input type="text" name="lokasi" placeholder="Contoh: Dusun Soko RT 02 RW 01"
-                                                class="text-black w-full border border-gray-300 rounded-full px-6 py-3 placeholder-gray-400 focus:ring-2 focus:ring-green-400 focus:outline-none">
+                                    <div class="mb-4">
+                                          <label for="lokasi" class="block font-semibold mb-1">📍 Lokasi Kejadian</label>
+
+                                          <div class="flex gap-2">
+                                                <input type="text" id="lokasiInput" name="lokasi" placeholder="Klik 'Ambil Lokasi Saya'" class="border rounded w-full px-3 py-2 text-black" readonly>
+                                                <button type="button" id="btnLokasi" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded">Ambil Lokasi Saya</button>
+                                          </div>
+
+                                          <p id="lokasiStatus" class="text-sm text-gray-600 mt-1"></p>
+
+                                          <!-- Tambahan untuk deskripsi manual -->
+                                          <label for="lokasi_detail" class="block font-semibold mt-3 mb-1">📝 Keterangan Tambahan Lokasi (opsional)</label>
+                                          <textarea id="lokasi_detail" name="lokasi_detail" rows="2" class="border rounded w-full px-3 py-2 text-black" placeholder="Misal: Di depan warung Bu Yati RT 02/RW 03, samping musholla..."></textarea>
+
+                                          <!-- Hidden field koordinat -->
+                                          <input type="hidden" id="latitude" name="latitude">
+                                          <input type="hidden" id="longitude" name="longitude">
                                     </div>
                               </div>
                         </div>
@@ -103,5 +116,83 @@
             </form>
       </main>
 </div>
+
+
+
+<script>
+      document.getElementById('btnLokasi').addEventListener('click', function() {
+            const status = document.getElementById('lokasiStatus');
+            const input = document.getElementById('lokasiInput');
+
+            if (!navigator.geolocation) {
+                  status.textContent = "❌ Browser Anda tidak mendukung fitur lokasi.";
+                  return;
+            }
+
+            status.textContent = "📍 Mengambil lokasi Anda... Mohon tunggu.";
+
+            navigator.geolocation.getCurrentPosition(success, error, {
+                  enableHighAccuracy: true,
+                  timeout: 10000
+            });
+
+            function success(position) {
+                  const lat = position.coords.latitude;
+                  const lon = position.coords.longitude;
+
+                  // Simpan koordinat ke hidden input
+                  document.getElementById('latitude').value = lat;
+                  document.getElementById('longitude').value = lon;
+
+                  // Ambil data lokasi dari Nominatim (OpenStreetMap)
+                  fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=19&addressdetails=1`)
+                        .then(res => res.json())
+                        .then(data => {
+                              if (data && data.address) {
+                                    const addr = data.address;
+                                    const rt = addr.neighbourhood || '';
+                                    const jalan = addr.road || '';
+                                    const dusun = addr.hamlet || addr.village || '';
+                                    const desa = addr.village || addr.suburb || '';
+                                    const kecamatan = addr.county || addr.town || addr.city_district || '';
+                                    const kabupaten = addr.state_district || addr.state || '';
+                                    const provinsi = addr.region || addr.state || '';
+
+                                    const alamatLengkap = [
+                                          rt,
+                                          jalan,
+                                          dusun,
+                                          desa,
+                                          kecamatan,
+                                          kabupaten,
+                                          provinsi
+                                    ].filter(Boolean).join(', ');
+
+                                    input.value = alamatLengkap;
+                                    const mapsUrl = `https://www.google.com/maps?q=${lat},${lon}`;
+                                    status.innerHTML = `✅ Lokasi ditemukan:<br><a href="${mapsUrl}" target="_blank" class="text-blue-600 underline">Lihat di Google Maps</a>`;
+                              } else {
+                                    input.value = `${lat}, ${lon}`;
+                                    status.textContent = "⚠️ Tidak bisa mengenali alamat, hanya koordinat.";
+                              }
+                        })
+                        .catch(() => {
+                              input.value = `${lat}, ${lon}`;
+                              status.textContent = "⚠️ Gagal mengenali lokasi.";
+                        });
+            }
+
+            function error(err) {
+                  if (err.code === 1) {
+                        status.textContent = "❌ Akses lokasi ditolak. Aktifkan izin lokasi di browser.";
+                  } else if (err.code === 2) {
+                        status.textContent = "⚠️ Lokasi tidak tersedia. Coba lagi.";
+                  } else {
+                        status.textContent = "⚠️ Waktu permintaan lokasi habis. Coba lagi.";
+                  }
+            }
+      });
+</script>
+
 
 @endsection

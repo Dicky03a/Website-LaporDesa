@@ -20,11 +20,14 @@ class LaporanResource extends Resource
 {
     protected static ?string $model = laporan::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentText;
+
 
     protected static ?string $recordTitleAttribute = 'Laporan';
 
     protected static ?string $navigationLabel = 'Laporan';
+    protected static ?string $pluralModelLabel = 'Laporan';
+    protected static ?string $modelLabel = 'Laporan';
 
     public static function form(Schema $schema): Schema
     {
