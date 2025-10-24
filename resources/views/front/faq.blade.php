@@ -1,15 +1,18 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('components.layouts.main')
 
-<head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>FAQ - Lapor Kades Desa Mojoagung</title>
-      @vite('resources/css/app.css')
-</head>
 
-<body class="bg-gray-50 text-gray-800">
-      <div class="max-w-4xl mx-auto px-6 py-12">
+@section('main')
+
+<div class="bg-gray-50 text-gray-800 w-full min-h-screen max-w-full mx-auto">
+      <div class="bg-amber-300 rounded-4xl">
+            <nav class="flex items-center justify-between rounded-b-4xl bg-amber-300 p-6 lg:px-10">
+                  <div>
+                        <img src="{{ asset('img/Frame 6.svg') }}" alt="Frame 6"
+                              class="w-48 h-auto lg:w-56" loading="lazy" decoding="async">
+                  </div>
+            </nav>
+      </div>
+      <div class="max-w-4xl mx-auto px-6 py-12 pb-30">
             <h1 class="text-3xl font-bold text-center mb-8 text-amber-600">
                   Pertanyaan yang Sering Diajukan (FAQ)
             </h1>
@@ -90,6 +93,8 @@
                   </details>
             </div>
       </div>
-</body>
+</div>
 
-</html>
+
+
+@endsection

@@ -82,7 +82,7 @@
 
                                           <div class="flex gap-2">
                                                 <input type="text" id="lokasiInput" name="lokasi" placeholder="Klik 'Ambil Lokasi Saya'" class="border rounded w-full px-3 py-2 text-black" readonly>
-                                                <button type="button" id="btnLokasi" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded">Ambil Lokasi Saya</button>
+                                                <button type="button" id="btnLokasi" class="bg-amber-300 hover:bg-amber-600 rounded-full text-white px-3 py-2">Ambil Lokasi Saya</button>
                                           </div>
 
                                           <p id="lokasiStatus" class="text-sm text-gray-600 mt-1"></p>
