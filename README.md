@@ -149,3 +149,17 @@ Proyek ini dilisensikan di bawah [MIT License](LICENSE).
 ## 📞 **Kontak**
 Wa : 085748138557
 email : dickyumum27@gmail.com
+
+
+<img width="1920" height="1052" alt="Screenshot from 2025-10-24 22-58-54" src="https://github.com/user-attachments/assets/1132ee2b-1aab-4900-a4ca-a57f415b6d03" />
+<img width="1920" height="1052" alt="Screenshot from 2025-10-24 22-59-05" src="https://github.com/user-attachments/assets/f66bffc6-6c20-4a96-882f-5ce380fb3598" />
+<img width="1920" height="1052" alt="Screenshot from 2025-10-24 22-59-11" src="https://github.com/user-attachments/assets/c446d996-a2ce-421f-97db-c0c956c93d10" />
+<img width="1920" height="1052" alt="Screenshot from 2025-10-24 22-59-27" src="https://github.com/user-attachments/assets/0bae7678-4e21-4a77-954a-1ad1527333a4" />
+<img width="1920" height="1052" alt="Screenshot from 2025-10-24 22-59-47" src="https://github.com/user-attachments/assets/0b4ae538-6988-4ac0-a252-95fe90001101" />
+<img width="1920" height="1052" alt="Screenshot from 2025-10-24 22-59-54" src="https://github.com/user-attachments/assets/d4babe24-be20-483c-8336-acde21f72063" />
+
+
+
+
+
+
